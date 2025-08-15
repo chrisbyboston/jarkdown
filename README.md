@@ -1,0 +1,115 @@
+# Jira Download - Export Jira Issues to Markdown
+
+A command-line tool that exports Jira Cloud issues into markdown files with all attachments downloaded locally and referenced inline.
+
+## Features
+
+- Fetches Jira issues via the Jira Cloud REST API
+- Downloads all attachments to a local folder
+- Converts issue descriptions from HTML to GitHub-flavored Markdown
+- Preserves formatting (headings, lists, code blocks, tables)
+- Embeds images inline and links other file types
+- Maintains the same visual structure as in Jira
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd jira-download
+```
+
+2. Install dependencies:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+3. Set up environment variables:
+
+Create a `.env` file with your Jira credentials:
+```
+JIRA_DOMAIN=your-company.atlassian.net
+JIRA_EMAIL=your-email@company.com
+JIRA_API_TOKEN=your-api-token
+```
+
+To get a Jira API token:
+1. Go to https://id.atlassian.com/manage-profile/security/api-tokens
+2. Click "Create API token"
+3. Give it a name and copy the token
+
+## Usage
+
+Basic usage:
+```bash
+./jira-download ISSUE-KEY
+```
+
+Examples:
+```bash
+# Download an issue to the current directory
+./jira-download LFG-1234
+
+# Download to a specific directory
+./jira-download LFG-1234 --output ~/Documents/jira-exports
+
+# Enable verbose logging
+./jira-download LFG-1234 --verbose
+```
+
+## Output Structure
+
+The tool creates a directory named after the issue key containing:
+- A markdown file with the issue content
+- All attachments downloaded from the issue
+
+Example:
+```
+LFG-1234/
+├── LFG-1234.md       # Issue content in markdown
+├── diagram.png       # Downloaded attachments
+├── report.pdf
+└── ...
+```
+
+## Markdown Format
+
+The generated markdown includes:
+- Issue title with link to Jira
+- Metadata (Type, Status, Priority, Assignee, Reporter)
+- Description with preserved formatting
+- Attachments section with all files
+
+Images are embedded inline, other files are linked.
+
+## Requirements
+
+- Python 3.6+
+- Jira Cloud instance
+- Jira API token with read permissions
+
+## Dependencies
+
+- `requests` - HTTP client for API calls
+- `markdownify` - HTML to Markdown conversion
+- `python-dotenv` - Environment variable management
+
+## Limitations
+
+- Currently supports single issue export only
+- Comments are not included (planned for future)
+- Requires Jira Cloud (not Server/Data Center)
+
+## Future Enhancements
+
+- Export multiple issues with JQL queries
+- Include issue comments
+- Support for bulk export
+- Hierarchical export (epics with stories)
+- Better ADF format handling
+
+## License
+
+See LICENSE file for details.
